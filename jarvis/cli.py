@@ -44,6 +44,12 @@ def cmd_status(args):
     print("  Adapter Target     : QLoRA (4-bit NF4, r=16, 8-bit AdamW)")
     print("  Promotion Gate     : Paired McNemar Hypothesis Test (p < 0.05)")
     print("  Active Deployment  : v0 (Base / Human-gated)")
+
+    # 5. Mobile Security & App Telemetry (Warden)
+    print("\n[Mobile App Privacy & Security (Warden 0.2)]")
+    print("  Engine             : Frida-based ART & Native Dynamic Instrumentation")
+    print("  Feature Groups     : 97 features (volume, network, SDK, background, evasion)")
+    print("  Classification     : HistGradientBoosting + IsolationForest")
     print("=" * 60)
     return 0
 
@@ -89,6 +95,10 @@ def main(argv=None) -> int:
     # Trace
     p_trace = sub.add_parser("trace", help="Flight recorder audit operations")
     p_trace.add_argument("action", choices=["verify", "demo", "status"])
+
+    # Warden (Mobile App Privacy & Security Analysis)
+    p_warden = sub.add_parser("warden", help="Mobile app privacy & security risk classifier (Frida/ART)")
+    p_warden.add_argument("warden_args", nargs=argparse.REMAINDER, help="Warden command and arguments")
 
     args, extra = parser.parse_known_args(argv)
 
@@ -137,6 +147,16 @@ def main(argv=None) -> int:
     if args.cmd == "context":
         print(f"Recall query: '{args.query}' - Ingest server ready on port 8787.")
         return 0
+
+    if args.cmd == "warden":
+        import warden.cli as warden_cli
+        pargs = list(args.warden_args) if args.warden_args else list(extra)
+        old_argv = sys.argv
+        try:
+            sys.argv = ["warden"] + pargs
+            return warden_cli.main()
+        finally:
+            sys.argv = old_argv
 
     return 0
 

@@ -25,11 +25,17 @@ audio = [
     "onnxruntime",
     "sounddevice",
 ]
+warden = [
+    "scikit-learn",
+    "joblib",
+    "frida",
+]
 
 [project.scripts]
 jarvis = "jarvis.cli:main"
 jarvis-os = "jarvis.cli:main"
+warden = "warden.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["jarvis*"]
+include = ["jarvis*", "warden*"]

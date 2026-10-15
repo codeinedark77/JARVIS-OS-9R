@@ -6,7 +6,7 @@
 [![Target Device](https://img.shields.io/badge/Device-OnePlus_9R_(lemonades)-FF0000.svg?style=for-the-badge&logo=android&logoColor=white)](https://lineageos.org/)
 [![Acceleration](https://img.shields.io/badge/Compute-NVIDIA_RTX_3050_GPU-76B900.svg?style=for-the-badge&logo=nvidia&logoColor=white)](https://developer.nvidia.com/)
 [![Kernel](https://img.shields.io/badge/Ring--0-eBPF_Telemetry-black.svg?style=for-the-badge&logo=linux&logoColor=white)](https://ebpf.io/)
-[![Tests](https://img.shields.io/badge/Test_Suite-282%2F282_Passing-success.svg?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Tests](https://img.shields.io/badge/Test_Suite-331%2F331_Passing-success.svg?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 **A unified, zero-trust edge operating system orchestrating mobile device autonomy, local speech perception, in-kernel telemetry, and self-improving policy execution.**
@@ -95,9 +95,12 @@ graph TD
 - **Continuous Trajectory Curation:** Harvests successful and failed action trajectories.
 - **LoRA Fine-Tuning Factory (`train_lora.py`):** Trains lightweight adapter layers from operational traces for model alignment.
 
-### 5. `jarvis/telemetry` (Warden & eBPF Telemetry)
-- **In-Kernel Ingestion:** Collects ring-0 system events (`sys_execve`, `sys_connect`).
-- **Feature Extraction & Attribution:** Computes event-level Kolmogorov complexity approximations and maps anomalies back to parent PIDs.
+### 5. `jarvis/telemetry` & `warden` (Warden Dynamic Analysis & eBPF Telemetry)
+- **Ring-0 Kernel Ingestion:** Collects system-level events (`sys_execve`, `sys_connect`) via eBPF probes.
+- **Frida Dynamic Agent (Warden 0.2):** High-throughput hooking across Android Java runtime and native libc (`connect`, `getaddrinfo`, `open`).
+- **Telemetry Feature Extraction:** Computes Kolmogorov complexity approximations, entropy distributions, and structural burstiness.
+- **Classifier & SHAP Explanations:** Trains Scikit-Learn Random Forest classifiers with calibrated probabilities and SHAP tree explainers for telemetry privacy scoring.
+- **Warden CLI Subsystem:** Full suite of diagnostic and analysis tools (`jarvis warden doctor`, `capture`, `train`, `score`, `report`, `export`).
 
 ### 6. `jarvis/audit` (Cryptographic Audit & Hardening)
 - **SHA-256 Merkle Ledger:** Strictly monotonic action log where any historical tampering invalidates the verification root.
@@ -116,28 +119,33 @@ graph TD
 
 ### 1. Clone & Setup Python Environment
 ```bash
-git clone https://github.com/Slattx7/JARVIS-OS-9R.git
+git clone https://github.com/codeinedark77/JARVIS-OS-9R.git
 cd JARVIS-OS-9R
 
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e .
+pip install -e ".[all]"
 ```
 
 ### 2. Verify System Test Suite
-Run the full verification suite (282 comprehensive unit & integration tests):
+Run the full verification suite (331 comprehensive unit & integration tests covering core OS + Warden 0.2):
 ```bash
 pytest tests/ -v
 ```
-*Expected result: 282 passed in ~20 seconds.*
+*Expected result: 331 passed in ~110 seconds.*
 
-### 3. Launching the OS
+### 3. Launching the OS & Telemetry Analysis
 ```bash
 # Start JARVIS in autonomous daemon mode
 jarvis-os --config config/jarvis.json --device 100.88.162.69:5555
 
-# Or run the interactive policy gate CLI
+# Run the interactive policy gate CLI
 python3 -m jarvis.policy.cli --interactive
+
+# Warden 0.2 Dynamic Analysis & Device Doctor
+jarvis warden doctor
+jarvis warden capture --pkg com.target.app --out events.db
+jarvis warden score events.db --explain
 ```
 
 ---
