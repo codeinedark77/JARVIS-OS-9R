@@ -1,4 +1,4 @@
-# 🧠 JARVIS-OS-9R: Autonomous Edge AI Operating System
+# 🧠 JARVIS-OS-9R: Autonomous Edge AI Runtime & Mobile Orchestrator
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 [![Tests](https://img.shields.io/badge/Test_Suite-331%2F331_Passing-success.svg?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
-**A unified, zero-trust edge operating system orchestrating mobile device autonomy, local speech perception, in-kernel telemetry, and self-improving policy execution.**
+**A unified, zero-trust edge runtime orchestrating mobile device autonomy, local speech perception, in-kernel telemetry, and self-improving policy execution.**
 
 </div>
 
@@ -17,9 +17,9 @@
 
 ## 🌟 Executive Overview
 
-**JARVIS-OS-9R** represents the convergence of autonomous mobile robotics, local AI perception, and ring-0 kernel security. Designed specifically for the **OnePlus 9R** (`lemonades`, Snapdragon 870) tethered over an encrypted **Tailscale mesh** to an **RTX 3050 workstation host**, JARVIS-OS operates with sub-second voice loops, strict cryptographic audit chains, and in-kernel active mitigation.
+**JARVIS-OS-9R** represents the convergence of autonomous mobile robotics, local AI perception, and ring-0 kernel security. Designed specifically for the **OnePlus 9R** (`lemonades`, Snapdragon 870) tethered over an encrypted **Tailscale mesh** to an **RTX 3050 workstation host**, JARVIS operates with sub-second voice loops, strict cryptographic audit chains, and in-kernel active mitigation.
 
-Unlike cloud-dependent voice assistants or fragile user-space macro tools, JARVIS-OS enforces:
+Unlike cloud-dependent voice assistants or fragile user-space macro tools, JARVIS enforces:
 1. **Zero-Trust Permission Tiers (Tier-0 to Tier-3):** No autonomous action touches device hardware, system files, or sensitive APIs without taint analysis and cryptographic validation.
 2. **Deterministic Cryptographic Audit Trail:** Every perception, reasoning step, and device action is appended to a tamper-proof SHA-256 hash-chained ledger.
 3. **Hybrid Edge-Workstation Split:** Low-latency sensor ingestion and execution run directly on the phone (<14MB RAM, <0.2% CPU); heavy neural reasoning (Ollama Qwen 2.5 7B, Whisper, Kokoro) executes on the host GPU.
@@ -128,13 +128,13 @@ pip install -e ".[all]"
 ```
 
 ### 2. Verify System Test Suite
-Run the full verification suite (331 comprehensive unit & integration tests covering core OS + Warden 0.2):
+Run the full verification suite (331 comprehensive unit & integration tests covering core subsystems + Warden 0.2):
 ```bash
 pytest tests/ -v
 ```
 *Expected result: 331 passed in ~110 seconds.*
 
-### 3. Launching the OS & Telemetry Analysis
+### 3. Launching JARVIS & Telemetry Analysis
 ```bash
 # Start JARVIS in autonomous daemon mode
 jarvis-os --config config/jarvis.json --device 100.88.162.69:5555
@@ -153,7 +153,7 @@ jarvis warden score events.db --explain
 ## 🔒 Security & Safe Operation
 
 > [!IMPORTANT]
-> **Zero Bootloop Guarantee:** JARVIS-OS does **not** flash boot partitions or edit `/system` directly at runtime. All volatile mobile utilities operate inside `/data/local/tmp/` and the optional Magisk systemless overlay. A physical device reboot immediately reverts all transient kernel modifications.
+> **Zero Bootloop Guarantee:** JARVIS does **not** flash boot partitions or edit `/system` directly at runtime. All volatile mobile utilities operate inside `/data/local/tmp/` and the optional Magisk systemless overlay. A physical device reboot immediately reverts all transient kernel modifications.
 
 > [!WARNING]
 > **Network Screen Captures:** When orchestrating the OnePlus 9R over network ADB (`adb -s 100.x.y.z:5555`), avoid `exec-out screencap -p > local.png`. Always capture to on-device storage (`/sdcard/screencap.png`) before pulling to prevent truncated image corruption.
