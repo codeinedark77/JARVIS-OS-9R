@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "jarvis-os"
 version = "1.0.0"
-description = "Unified Autonomous Edge Operating System for OnePlus 9R + RTX 3050 Workstation"
+description = "Unified Autonomous Edge AI Platform & Runtime for OnePlus 9R + RTX 3050 Workstation"
 authors = [{ name = "DeepMind & Yash Kandhare" }]
 requires-python = ">=3.10"
 dependencies = [
@@ -35,7 +35,8 @@ warden = [
 jarvis = "jarvis.cli:main"
 jarvis-os = "jarvis.cli:main"
 warden = "warden.cli:main"
+jarvis-crawl = "jarvis_crawl.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["jarvis*", "warden*"]
+include = ["jarvis*", "warden*", "jarvis_crawl*"]

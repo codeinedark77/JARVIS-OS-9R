@@ -1,0 +1,7 @@
+{
+  "episodes": 1,
+  "files": [
+    "sequences.jsonl",
+    "features.jsonl"
+  ]
+}

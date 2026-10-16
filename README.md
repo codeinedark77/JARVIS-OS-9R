@@ -6,7 +6,7 @@
 [![Target Device](https://img.shields.io/badge/Device-OnePlus_9R_(lemonades)-FF0000.svg?style=for-the-badge&logo=android&logoColor=white)](https://lineageos.org/)
 [![Acceleration](https://img.shields.io/badge/Compute-NVIDIA_RTX_3050_GPU-76B900.svg?style=for-the-badge&logo=nvidia&logoColor=white)](https://developer.nvidia.com/)
 [![Kernel](https://img.shields.io/badge/Ring--0-eBPF_Telemetry-black.svg?style=for-the-badge&logo=linux&logoColor=white)](https://ebpf.io/)
-[![Tests](https://img.shields.io/badge/Test_Suite-331%2F331_Passing-success.svg?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Tests](https://img.shields.io/badge/Test_Suite-395%2F395_Passing-success.svg?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 **A unified, zero-trust edge runtime orchestrating mobile device autonomy, local speech perception, in-kernel telemetry, and self-improving policy execution.**
@@ -107,6 +107,13 @@ graph TD
 - **Emergency Killswitch:** Instantaneous hardware-safe killswitch halting all automated routines and restoring safe default device states.
 - **Deterministic Replay Harness:** Replay recorded incident traces to reproduce system states exactly.
 
+### 7. `jarvis/crawl` & `jarvis_crawl` (Autonomous Mobile App Exploration)
+- **Zero-Trust UI Exploration:** Autonomous app driver enforcing strict T0–T4 action safety gates (caps at T2; auto-escalates T3, strictly denies T4 dangerous controls).
+- **State Identity & Deduplication:** Generates normalized structural XML tree hashes and 64-bit simhashes across Compose/Flutter and native views.
+- **Event Attribution Engine:** Assigns Frida runtime hooks to specific UI actions across direct, tail, launch, and background attribution windows.
+- **Trace Replay & Regression Gate:** Deterministically replays recorded UI traces (`episode.jsonl` + blobs) to verify state mutations and safety invariant enforcement.
+- **Ecosystem Integration:** Direct export seam to Warden features (`features.jsonl`) for privacy classification, and sequence models (`sequences.jsonl`) for QLoRA planner training.
+
 ---
 
 ## 🚀 Quickstart & Installation
@@ -128,11 +135,11 @@ pip install -e ".[all]"
 ```
 
 ### 2. Verify System Test Suite
-Run the full verification suite (331 comprehensive unit & integration tests covering core subsystems + Warden 0.2):
+Run the full verification suite (395 comprehensive unit & integration tests covering core subsystems, Warden 0.2, and Jarvis Crawl):
 ```bash
 pytest tests/ -v
 ```
-*Expected result: 331 passed in ~110 seconds.*
+*Expected result: 395 passed in ~120 seconds.*
 
 ### 3. Launching JARVIS & Telemetry Analysis
 ```bash
@@ -146,6 +153,12 @@ python3 -m jarvis.policy.cli --interactive
 jarvis warden doctor
 jarvis warden capture --pkg com.target.app --out events.db
 jarvis warden score events.db --explain
+
+# Autonomous App Exploration & Trace Harvester
+jarvis crawl selftest
+jarvis crawl run --device fake --steps 50 --out traces
+jarvis crawl replay traces
+jarvis crawl export traces --out dataset
 ```
 
 ---

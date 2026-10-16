@@ -50,6 +50,12 @@ def cmd_status(args):
     print("  Engine             : Frida-based ART & Native Dynamic Instrumentation")
     print("  Feature Groups     : 97 features (volume, network, SDK, background, evasion)")
     print("  Classification     : HistGradientBoosting + IsolationForest")
+
+    # 6. Autonomous Mobile App Exploration (Crawl)
+    print("\n[Autonomous Mobile Exploration (jarvis_crawl)]")
+    print("  Engine             : Safety-gated UIAutomator + Frida Hook Tracing")
+    print("  Coverage           : T0-T4 Action Tiers, Simhash State Identity, Attribution Engine")
+    print("  Ecosystem Seams    : -> Warden Features & Jarvis Trace/Loop Sequences")
     print("=" * 60)
     return 0
 
@@ -99,6 +105,10 @@ def main(argv=None) -> int:
     # Warden (Mobile App Privacy & Security Analysis)
     p_warden = sub.add_parser("warden", help="Mobile app privacy & security risk classifier (Frida/ART)")
     p_warden.add_argument("warden_args", nargs=argparse.REMAINDER, help="Warden command and arguments")
+
+    # Crawl (Autonomous App Exploration & Trace Harvester)
+    p_crawl = sub.add_parser("crawl", help="Autonomous mobile app explorer & replayable trace engine")
+    p_crawl.add_argument("crawl_args", nargs=argparse.REMAINDER, help="Crawl command and arguments")
 
     args, extra = parser.parse_known_args(argv)
 
@@ -155,6 +165,16 @@ def main(argv=None) -> int:
         try:
             sys.argv = ["warden"] + pargs
             return warden_cli.main()
+        finally:
+            sys.argv = old_argv
+
+    if args.cmd == "crawl":
+        import jarvis_crawl.cli as crawl_cli
+        pargs = list(args.crawl_args) if args.crawl_args else list(extra)
+        old_argv = sys.argv
+        try:
+            sys.argv = ["jarvis-crawl"] + pargs
+            return crawl_cli.main(pargs)
         finally:
             sys.argv = old_argv
 
