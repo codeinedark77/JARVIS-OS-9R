@@ -40,3 +40,6 @@ jarvis-crawl = "jarvis_crawl.cli:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["jarvis*", "warden*", "jarvis_crawl*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
